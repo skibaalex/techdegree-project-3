@@ -1,6 +1,6 @@
-#Techdegree Project 3 - Interactive Froms
+# Techdegree Project 3 - Interactive Froms
 
-##Real-time error message
+## Real-time error message
 
 a Real-time error display messages were added to all the text input fields
 

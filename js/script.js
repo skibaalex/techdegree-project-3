@@ -1,4 +1,3 @@
-
 //toggle the other job field display
 const toggleJobField = (display) => {
     const jobField = document.getElementById('other-job-role')
@@ -20,7 +19,9 @@ const toggleColorDisable = (value) => {
 //alternate between the t-shirt color based on the design
 const alternateColors = (value) => {
     const colorInput = document.getElementById('color')
-    const { children } = colorInput
+    const {
+        children
+    } = colorInput
     const jsPunsRegex = /js puns/
     const jsLoveRegex = /heart js/
     for (child of children) {
@@ -154,7 +155,9 @@ const validateForm = () => {
 //disable Conflicting Activities
 const disableConflictActivity = (node, activities, checked) => {
     const time1 = node.attributes['data-day-and-time'].value
-    const { parentNode } = node
+    const {
+        parentNode
+    } = node
     for (activity of activities) {
         //skip if its the same node or the main activity
         if (activity === parentNode || activity.children.length === 4) continue;
@@ -181,7 +184,9 @@ const initializeApp = () => {
     toggleJobField('none')
     //add event listener in case other job was clicked
     document.getElementById('title').addEventListener('change', e => {
-        const { value } = e.target
+        const {
+            value
+        } = e.target
         if (value === 'other') toggleJobField('block')
         else toggleJobField('none')
     })
@@ -192,7 +197,9 @@ const initializeApp = () => {
     //add an event listener to the Design select input
     const designInput = document.getElementById('design')
     designInput.addEventListener('change', e => {
-        const { value } = e.target;
+        const {
+            value
+        } = e.target;
         if (value) {
             toggleColorDisable(value)
             alternateColors(value)
@@ -202,19 +209,22 @@ const initializeApp = () => {
     //add activities checkbox change events
     const activities = document.getElementById('activities-box')
     for (activity of activities.children) {
-        const { children } = activity;
+        const {
+            children
+        } = activity;
         children[0].addEventListener('change', e => {
-            const { checked } = e.target;
+            const {
+                checked
+            } = e.target;
             updateTotalPrice(checked ? parseInt(e.target.attributes['data-cost'].value) : parseInt(e.target.attributes['data-cost'].value) * -1)
             //Extra Credit Disable Conflict Activities
             if (e.target.parentNode.children.length === 5) disableConflictActivity(e.target, activities.children, checked)
         })
-        const parentNode = activity.parentNode
         children[0].addEventListener('focus', e => {
-            parentNode.classList.add('focus')
+            e.target.parentNode.classList.add('focus')
         })
         children[0].addEventListener('blur', e => {
-            parentNode.classList.remove('focus')
+            e.target.parentNode.classList.remove('focus')
         })
     }
 
@@ -225,7 +235,9 @@ const initializeApp = () => {
     togglePaymentMethodDisplay('credit-card')
     //alternate between the payment methods
     paymentSelect.addEventListener('change', e => {
-        const { value } = e.target
+        const {
+            value
+        } = e.target
         togglePaymentMethodDisplay(value)
     })
 
@@ -240,28 +252,27 @@ const initializeApp = () => {
 
 //Extra Credit Real Time Error Messages
 function realTimeErrors() {
-    const elements = [
-        {
-            node: document.getElementById('name'),
-            name: 'name',
-            validator: validateName
-        }, {
-            node: document.getElementById('email'),
-            name: 'email',
-            validator: validateEmail
-        }, {
-            node: document.getElementById('credit-card'),
-            name: 'credit-card',
-            validator: validateCCNumber
-        }, {
-            node: document.getElementById('zip'),
-            name: 'zip',
-            validator: validateZipCode
-        }, {
-            node: document.getElementById('cvv'),
-            name: 'cvv',
-            validator: validateCVV
-        }]
+    const elements = [{
+        node: document.getElementById('name'),
+        name: 'name',
+        validator: validateName
+    }, {
+        node: document.getElementById('email'),
+        name: 'email',
+        validator: validateEmail
+    }, {
+        node: document.getElementById('credit-card'),
+        name: 'credit-card',
+        validator: validateCCNumber
+    }, {
+        node: document.getElementById('zip'),
+        name: 'zip',
+        validator: validateZipCode
+    }, {
+        node: document.getElementById('cvv'),
+        name: 'cvv',
+        validator: validateCVV
+    }]
     for (let element of elements) {
         element.node.addEventListener('keyup', element.validator)
     }

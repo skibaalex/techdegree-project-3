@@ -68,7 +68,6 @@ const displayErrors = (value, field) => {
     element.style.display = value ? 'none' : 'block'
     if (field === 'email') {
         const email = element.parentNode.children[1].value
-        console.log(email)
         element.innerText = email.length ? 'Email address must be formatted correctly' : 'Email field cannot be empty'
     }
 }
@@ -81,6 +80,7 @@ const validateEmail = () => {
     email.parentNode.classList.add(emailValidation ? 'valid' : 'not-valid')
     email.parentNode.classList.remove(!emailValidation ? 'valid' : 'not-valid')
     displayErrors(emailValidation, 'email')
+    return emailValidation
 }
 
 //validate name
@@ -91,6 +91,7 @@ const validateName = () => {
     name.parentNode.classList.add(nameValidation ? 'valid' : 'not-valid')
     name.parentNode.classList.remove(!nameValidation ? 'valid' : 'not-valid')
     displayErrors(nameValidation, 'name')
+    return nameValidation
 }
 
 //validate Register for Activities
@@ -100,6 +101,7 @@ const validateActivities = () => {
     total.parentNode.classList.add(activitiesValidation ? 'valid' : 'not-valid')
     total.parentNode.classList.remove(!activitiesValidation ? 'valid' : 'not-valid')
     displayErrors(activitiesValidation, 'activities')
+    return activitiesValidation
 }
 
 
@@ -111,6 +113,7 @@ const validateCCNumber = () => {
     ccNumber.parentNode.classList.add(ccNumberValidation ? 'valid' : 'not-valid')
     ccNumber.parentNode.classList.remove(!ccNumberValidation ? 'valid' : 'not-valid')
     displayErrors(ccNumberValidation, 'cc')
+    return ccNumberValidation
 }
 
 
@@ -122,6 +125,7 @@ const validateZipCode = () => {
     ccZip.parentNode.classList.add(ccZipValidation ? 'valid' : 'not-valid')
     ccZip.parentNode.classList.remove(!ccZipValidation ? 'valid' : 'not-valid')
     displayErrors(ccZipValidation, 'zip')
+    return ccZipValidation
 }
 
 //validate CVV
@@ -132,23 +136,25 @@ const validateCVV = () => {
     ccCVV.parentNode.classList.add(ccCVVValidation ? 'valid' : 'not-valid')
     ccCVV.parentNode.classList.remove(!ccCVVValidation ? 'valid' : 'not-valid')
     displayErrors(ccCVVValidation, 'cvv')
+    return ccCVVValidation
 }
 
 //validate the form
 const validateForm = () => {
-
-    validateEmail()
-    validateName()
-    validateActivities()
-
+    let valid
+    const emailValidation = validateEmail()
+    const nameValidation = validateName()
+    const activitiesValidation = validateActivities()
+    valid = emailValidation && nameValidation && activitiesValidation
     //validate Credit card Payment if the method is selected
     const method = document.getElementById('payment').value
     if (method === 'credit-card') {
-        validateCCNumber()
-        validateZipCode()
-        validateCVV()
+        const ccValidation = validateCCNumber()
+        const zipValidation = validateZipCode()
+        const CVVValidation = validateCVV()
+        valid = valid && ccValidation && zipValidation && CVVValidation
     }
-
+    return valid
 }
 
 
@@ -243,8 +249,9 @@ const initializeApp = () => {
 
     //set submit handler
     document.querySelector('form').addEventListener('submit', e => {
-        e.preventDefault()
-        validateForm()
+        const valid = validateForm()
+        if (!valid) e.preventDefault()
+        console.log(valid)
     })
     realTimeErrors()
 }

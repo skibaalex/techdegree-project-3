@@ -18,25 +18,21 @@ const toggleColorDisable = (value) => {
 
 //alternate between the t-shirt color based on the design
 const alternateColors = (value) => {
-    const colorInput = document.getElementById('color')
-    const {
-        children
-    } = colorInput
-    const jsPunsRegex = /js puns/
-    const jsLoveRegex = /heart js/
-    for (child of children) {
-        //skip the first option (acts as a placeholder)
-        if (!child.attributes['data-theme']) continue
-
-        const regex = value === 'js puns' ? jsPunsRegex : jsLoveRegex
-        const theme = child.attributes['data-theme'].value
-        if (!regex.test(theme)) {
-            child.setAttribute('hidden', true)
+    const select = document.getElementById('color');
+    const colors = Array.from(select.children)
+    colors.forEach((color, i) => {
+        const theme = color.getAttribute('data-theme')
+        if (!theme) return
+        else if (theme === value) {
+            color.removeAttribute('hidden')
+            const slectedTheme = colors[select.selectedIndex].getAttribute('data-theme')
+            if (slectedTheme !== value) color.selected = true
         } else {
-            child.removeAttribute('hidden')
+            color.setAttribute('hidden', true)
         }
+    })
 
-    }
+
 }
 
 //helper function to extract the numeric value of the total cost

@@ -248,7 +248,6 @@ const initializeApp = () => {
         e.preventDefault()
         const valid = validateForm()
         if (valid) location.reload()
-        console.log(valid)
     })
     realTimeErrors()
 }
